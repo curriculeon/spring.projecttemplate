@@ -1,8 +1,8 @@
 package com.github.curriculeon.controllers;
 
-
-import com.github.curriculeon.models.Muffin;
-import com.github.curriculeon.repositories.MuffinRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.curriculeon.models.MyModel;
+import com.github.curriculeon.repositories.MyRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -18,46 +18,51 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Optional;
 
+
+/**
+ * @author leon on 8/30/18.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class MuffinControllerTest {
+public class MyControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
+
     @MockBean
-    private MuffinRepository repository;
+    private MyRepository repository;
 
     @Test
     public void testShow() throws Exception {
         Long givenId = 1L;
+        MyModel myModel = new MyModel();
         BDDMockito
                 .given(repository.findById(givenId))
-                .willReturn(Optional.of(new Muffin("blueberry")));
-
-        String expectedContent = "{\"id\":null,\"flavor\":\"blueberry\"}";
+                .willReturn(Optional.of(myModel));
+        String expectedContent = new ObjectMapper().writeValueAsString(myModel);
         this.mvc.perform(MockMvcRequestBuilders
-                .get("/muffins/" + givenId))
+                .get("/bakers/" + givenId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expectedContent));
     }
 
     @Test
     public void testCreate() throws Exception {
-        Muffin muffin = new Muffin("blueberry");
+        MyModel myModel = new MyModel();
         BDDMockito
-                .given(repository.save(muffin))
-                .willReturn(muffin);
+                .given(repository.save(myModel))
+                .willReturn(myModel);
 
-        String expectedContent = "{\"id\":null,\"flavor\":\"blueberry\"}";
+        String expectedContent = new ObjectMapper().writeValueAsString(myModel);
         this.mvc.perform(MockMvcRequestBuilders
-                .post("/muffins/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .post("/bakers/")
                 .content(expectedContent)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
             )
-            .andExpect(MockMvcResultMatchers.status().isCreated())
-            .andExpect(MockMvcResultMatchers.content().string(expectedContent));
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string(expectedContent));
     }
 }

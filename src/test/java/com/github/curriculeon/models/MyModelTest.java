@@ -8,15 +8,15 @@ import org.junit.Test;
 import javax.persistence.Entity;
 
 
-public class BakerTest {
+public class MyModelTest {
     @Test
     public void testClassSignatureAnnotations() {
-        Assert.assertTrue(Baker.class.isAnnotationPresent(Entity.class));
+        Assert.assertTrue(MyModel.class.isAnnotationPresent(Entity.class));
     }
     @Test
     public void testCreateJson() throws JsonProcessingException {
         ObjectMapper jsonWriter = new ObjectMapper();
-        Baker baker = new Baker();
-        String json = jsonWriter.writeValueAsString(baker);
+        MyModel myModel = new MyModel();
+        String json = jsonWriter.writeValueAsString(myModel);
     }
 }
