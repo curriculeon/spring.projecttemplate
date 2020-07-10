@@ -1,8 +1,8 @@
 package com.github.curriculeon.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.curriculeon.models.MyModel;
-import com.github.curriculeon.repositories.MyRepository;
+import com.github.curriculeon.models.Person;
+import com.github.curriculeon.repositories.PersonRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -25,23 +25,23 @@ import java.util.Optional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class MyControllerTest {
+public class PersonControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
 
     @MockBean
-    private MyRepository repository;
+    private PersonRepository repository;
 
     @Test
     public void testShow() throws Exception {
         Long givenId = 1L;
-        MyModel myModel = new MyModel();
+        Person person = new Person();
         BDDMockito
                 .given(repository.findById(givenId))
-                .willReturn(Optional.of(myModel));
-        String expectedContent = new ObjectMapper().writeValueAsString(myModel);
+                .willReturn(Optional.of(person));
+        String expectedContent = new ObjectMapper().writeValueAsString(person);
         this.mvc.perform(MockMvcRequestBuilders
                 .get("/bakers/" + givenId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -50,12 +50,12 @@ public class MyControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        MyModel myModel = new MyModel();
+        Person person = new Person();
         BDDMockito
-                .given(repository.save(myModel))
-                .willReturn(myModel);
+                .given(repository.save(person))
+                .willReturn(person);
 
-        String expectedContent = new ObjectMapper().writeValueAsString(myModel);
+        String expectedContent = new ObjectMapper().writeValueAsString(person);
         this.mvc.perform(MockMvcRequestBuilders
                 .post("/bakers/")
                 .content(expectedContent)

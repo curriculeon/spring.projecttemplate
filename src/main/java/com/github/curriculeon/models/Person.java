@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class MyModel {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    public MyModel() {
+    public Person() {
     }
 
-    public MyModel(Long id, String name) {
+    public Person(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -43,9 +43,9 @@ public class MyModel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyModel myModel = (MyModel) o;
-        return Objects.equals(id, myModel.id) &&
-                Objects.equals(name, myModel.name);
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) &&
+                Objects.equals(name, person.name);
     }
 
     @Override

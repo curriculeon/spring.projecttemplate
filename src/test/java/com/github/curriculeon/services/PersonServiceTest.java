@@ -3,8 +3,8 @@ package com.github.curriculeon.services;
 
 import com.github.curriculeon.MyApplication;
 
-import com.github.curriculeon.controllers.MyController;
-import com.github.curriculeon.models.MyModel;
+import com.github.curriculeon.controllers.PersonController;
+import com.github.curriculeon.models.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +19,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = MyApplication.class)
-public class MyModelServiceTest {
+public class PersonServiceTest {
     @MockBean
-    private MyService service;
+    private PersonService service;
 
-    private MyController controller;
+    private PersonController controller;
 
     @Before
     public void setup(){
-        this.controller = new MyController(service);
+        this.controller = new PersonController(service);
     }
 
 
@@ -35,19 +35,19 @@ public class MyModelServiceTest {
     public void testCreate() {
         // Given
         HttpStatus expected = HttpStatus.CREATED;
-        MyModel expectedMyModel = new MyModel();
+        Person expectedPerson = new Person();
         BDDMockito
-                .given(service.create(expectedMyModel))
-                .willReturn(expectedMyModel);
+                .given(service.create(expectedPerson))
+                .willReturn(expectedPerson);
 
         // When
-        ResponseEntity<MyModel> response = controller.create(expectedMyModel);
+        ResponseEntity<Person> response = controller.create(expectedPerson);
         HttpStatus actual = response.getStatusCode();
-        MyModel actualMyModel = response.getBody();
+        Person actualPerson = response.getBody();
 
         // Then
         Assert.assertEquals(expected, actual);
-        Assert.assertEquals(expectedMyModel, actualMyModel);
+        Assert.assertEquals(expectedPerson, actualPerson);
     }
 
 
@@ -56,20 +56,20 @@ public class MyModelServiceTest {
         // Given
         Long expectedId = 1L;
         HttpStatus expected = HttpStatus.OK;
-        MyModel expectedMyModel = new MyModel();
-        expectedMyModel.setId(expectedId);
+        Person expectedPerson = new Person();
+        expectedPerson.setId(expectedId);
         BDDMockito.
                 given(service.show(1L))
-                .willReturn(expectedMyModel);
+                .willReturn(expectedPerson);
 
         // When
-        ResponseEntity<MyModel> response = controller.show(expectedId);
+        ResponseEntity<Person> response = controller.show(expectedId);
         HttpStatus actual = response.getStatusCode();
-        MyModel actualMyModel = response.getBody();
+        Person actualPerson = response.getBody();
 
         // Then
         Assert.assertEquals(expected, actual);
-        Assert.assertEquals(expectedMyModel, actualMyModel);
+        Assert.assertEquals(expectedPerson, actualPerson);
     }
 
 }
