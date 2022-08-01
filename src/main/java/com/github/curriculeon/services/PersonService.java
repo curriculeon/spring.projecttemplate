@@ -2,7 +2,9 @@ package com.github.curriculeon.services;
 
 import com.github.curriculeon.repositories.PersonRepository;
 import com.github.curriculeon.models.Person;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PersonService {
     private PersonRepository repository;
 
